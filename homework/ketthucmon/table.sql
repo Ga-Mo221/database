@@ -14,7 +14,7 @@ CREATE TABLE NhaCungCap (
 CREATE TABLE SanPham (
     MaSanPham INT AUTO_INCREMENT PRIMARY KEY,
     TenSanPham VARCHAR(100) NOT NULL,
-    Size_ ENUM('s', 'm', 'l', 'x', 'xl', 'xxl') NOT NULL, 
+    Size ENUM('s', 'm', 'l', 'x', 'xl', 'xxl') NOT NULL, 
     ChatLieu VARCHAR(50),
     ThuongHieu VARCHAR(50),
     MauSac VARCHAR(50),

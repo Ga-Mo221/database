@@ -16,7 +16,7 @@ select * from nhacungcap;
 
 
 -- Thêm dữ liệu mẫu cho bảng SanPham
-INSERT INTO SanPham (TenSanPham, Size_, ChatLieu, ThuongHieu, MauSac, LoaiSanPham, GiaBan, SoLuongTon, MaNhaCungCap)
+INSERT INTO SanPham (TenSanPham, Size, ChatLieu, ThuongHieu, MauSac, LoaiSanPham, GiaBan, SoLuongTon, MaNhaCungCap)
 VALUES 
 ('Quần kaki nam nhung', 's', 'vải kaki nhung', 'vinhtai', 'đen, xanh đen, đỏ đô, vàng bò', 'Quần', 150.00, 50, 1),
 ('ÁO KHOÁC HEINEKEN', 'm', 'vải gió hoặc vải polyester', 'NBT', 'xanh lá', 'Áo Khoác', 200.00, 60, 4),

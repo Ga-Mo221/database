@@ -95,10 +95,59 @@ DELIMITER ;
 
 -- 4
 -- Cập nhật trạng thái đơn hàng khi hết hạn giao hàng
+DELIMITER $$
+
 CREATE EVENT event_update_trangthai_hoadon_moi_thang
 ON SCHEDULE EVERY 1 MONTH 
 DO
+BEGIN
   UPDATE HoaDon
   SET TrangThai = 'Hủy'
   WHERE TrangThai = 'Chưa Thanh Toán'
     AND NgayDat < NOW() - INTERVAL 30 DAY;
+END $$
+
+DELIMITER ;
+
+
+-- 5
+-- Cập nhật Cập nhật Trạng Thái Hóa Đơn
+DELIMITER $$
+CREATE EVENT Cap_nhat_trang_thai_hoa_don
+ON SCHEDULE EVERY 1 WEEK
+DO
+BEGIN
+    -- Cập nhật trạng thái của hóa đơn nếu chưa được xử lý
+    UPDATE HoaDon
+    SET TrangThai = 'Hoàn thành'
+    WHERE TrangThai = 'Đang giao' AND NgayGiao <= CURDATE();
+    
+    -- Cập nhật trạng thái nếu hóa đơn bị hủy
+    UPDATE HoaDon
+    SET TrangThai = 'Hủy'
+    WHERE TrangThai = 'Chưa Thanh Toán' AND NgayDat < CURDATE() - INTERVAL 7 DAY;
+END$$
+DELIMITER ;
+
+
+-- 6
+-- Cập nhật Mức Giảm Giá Hàng Tuần
+DELIMITER $$
+
+CREATE EVENT event_cap_nhat_giam_gia_hang_tuan
+ON SCHEDULE EVERY 1 WEEK
+DO
+BEGIN
+    -- Áp dụng giảm giá cho sản phẩm bán chạy
+    UPDATE SanPham
+    SET GiaBan = GiaBan * 0.9  -- Giảm giá 10% 
+    WHERE MaSanPham IN (
+        SELECT MaSanPham
+        FROM ChiTietDonHang
+        GROUP BY MaSanPham
+        ORDER BY SUM(SoLuong) DESC
+        LIMIT 5
+    );
+END$$
+
+DELIMITER ;
